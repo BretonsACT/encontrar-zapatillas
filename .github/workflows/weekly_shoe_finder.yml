@@ -1,0 +1,34 @@
+name: Weekly Shoe Finder Email Report
+
+on:
+  schedule:
+    # Runs every Friday at 07:00 UTC (09:00 AM Spain CEST / Madrid Time)
+    - cron: '0 7 * * 5'
+  workflow_dispatch:
+    # Allows manual trigger anytime from GitHub Actions tab
+
+jobs:
+  run-agent-and-send-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 👟 Run Sneaker Agent & Send HTML Email Report
+        env:
+          MAIL_USER: ${{ secrets.MAIL_USER }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: |
+          if [ -z "$MAIL_USER" ] || [ -z "$MAIL_PASSWORD" ]; then
+            echo "⚠️ ADVERTENCIA: No se han configurado los secretos MAIL_USER / MAIL_PASSWORD en GitHub."
+            echo "Generando vista previa local en modo dry-run..."
+            python3 send_report_email.py --to bretons@gmail.com --dry-run
+          else
+            python3 send_report_email.py --to bretons@gmail.com
+          fi
