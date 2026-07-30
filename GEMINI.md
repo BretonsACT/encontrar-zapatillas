@@ -17,6 +17,7 @@ Puedes editar cualquier parámetro de este documento para modificar las priorida
 | `ritmo_habitual` | **5:15 min/km** | Ritmo ágil-medio. Favorece espumas reactivas (FF Blast+, Pebax®, VFOAM) |
 | `tipo_pisada` | **Neutra / Supinadora ligera** | Evita postes rígidos de pronación severa salvo fatiga extrema |
 | `terreno` | **Asfalto duro y paradas** | Prioriza amortiguación alta y compuesto antideslizante (AHAR / MFOAM) |
+| `zapatillas_actuales` | **ASICS Novablast 5** | Zapatilla en uso actual. Referencia para rotación o sustitución directa |
 | `presupuesto_objetivo` | **< 100€ (Chollos preferentes)** | Da máxima prioridad a ofertas > 30% DTO |
 
 ---
