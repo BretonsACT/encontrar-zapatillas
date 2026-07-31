@@ -26,6 +26,20 @@ RESET = "\033[0m"
 
 MODELS_DATA = [
     {
+        "model": "ASICS Novablast 5",
+        "brand": "ASICS",
+        "category": "Daily Trainer Reactiva Premium (Tu Modelo Actual)",
+        "affinity": "99%",
+        "why_fits": "👟 Tu zapatilla actual en uso. Nueva generación con espuma FlyteFoam Blast MAX, geometría en trampolín mejorada y máxima reactividad para tus 10 km a 5:15 min/km.",
+        "decathlon_available": True,
+        "stores": [
+            {"name": "Zalando España", "price": 134.95, "original": 150.00, "stock_42_5": True, "shipping": "Gratis"},
+            {"name": "Alltricks España 🚴", "price": 135.00, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
+            {"name": "Decathlon España 💙", "price": 139.99, "original": 150.00, "stock_42_5": True, "shipping": "Recogida 1h gratis / Domicilio"},
+            {"name": "ASICS Tienda Oficial 🏷️", "price": 140.00, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 50€"}
+        ]
+    },
+    {
         "model": "ASICS Novablast 4",
         "brand": "ASICS",
         "category": "Daily Trainer Reactiva / Versátil",
@@ -38,6 +52,20 @@ MODELS_DATA = [
             {"name": "Zalando España", "price": 104.93, "original": 150.00, "stock_42_5": True, "shipping": "Gratis"},
             {"name": "Decathlon España 💙", "price": 109.99, "original": 150.00, "stock_42_5": True, "shipping": "Recogida 1h gratis / Envío"},
             {"name": "Top4Running", "price": 118.20, "original": 150.00, "stock_42_5": True, "shipping": "3.90€"}
+        ]
+    },
+    {
+        "model": "Puma Velocity Nitro 3",
+        "brand": "Puma",
+        "category": "Daily Trainer Versátil / Rival Novablast",
+        "affinity": "96%",
+        "why_fits": "🔥 Gran alternativa a Novablast. Espuma Nitro inyectada con nitrógeno y la mejor suela del mercado (PumaGrip) para asfalto mojado.",
+        "decathlon_available": True,
+        "stores": [
+            {"name": "Zalando España", "price": 89.95, "original": 130.00, "stock_42_5": True, "shipping": "Gratis"},
+            {"name": "Alltricks España 🚴", "price": 92.50, "original": 130.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
+            {"name": "Decathlon Marketplace 💙", "price": 94.99, "original": 130.00, "stock_42_5": True, "shipping": "Gratis"},
+            {"name": "Runnerinn (Tradeinn)", "price": 96.00, "original": 130.00, "stock_42_5": True, "shipping": "2.99€"}
         ]
     },
     {
