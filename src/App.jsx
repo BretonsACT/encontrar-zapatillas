@@ -213,22 +213,22 @@ export default function App() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-blue-600/40">
-            <span className="font-bold text-blue-300 block mb-1">💙 Chollo Estrella Decathlon: Cumulus 26</span>
+          <div className="bg-slate-900/80 p-4 rounded-xl border border-cyan-500/40">
+            <span className="font-bold text-cyan-400 block mb-1">👟 Tu Zapatilla Actual: ASICS Novablast 5</span>
             <p className="text-slate-300">
-              La <strong>ASICS GEL-Cumulus 26</strong> está rebajada a <strong>94,99€ en Decathlon</strong> (PVP 160€, -41%). La mejor opción oficial de marca en relación calidad/precio con recogida inmediata.
+              Disponible en <strong>Zalando España (139,95€)</strong> y <strong>Alltricks (142,99€)</strong> con stock en talla 42.5 EU. Es el tope de gama en reactividad para 5:15 min/km.
             </p>
           </div>
-          <div className="bg-slate-900/80 p-4 rounded-xl border border-cyan-500/40">
-            <span className="font-bold text-cyan-400 block mb-1">⚡ Alternativa Decathlon: Kiprun KD900 Light</span>
+          <div className="bg-slate-900/80 p-4 rounded-xl border border-blue-600/40">
+            <span className="font-bold text-blue-300 block mb-1">💙 Chollo Decathlon: Kiprun KD900 Light</span>
             <p className="text-slate-300">
-              Si quieres la ligereza y rebote de la Novablast 4 por menos dinero, la <strong>Kiprun KD900 Light (89,99€ en Decathlon)</strong> ofrece espuma Pebax® y solo 200g de peso.
+              La alternativa ultraligera de Decathlon (solo 200g y Pebax® VFOAM) está rebajada a <strong>69,99€ en Decathlon</strong> (PVP 109,99€, -36% DTO) con 60 días de prueba.
             </p>
           </div>
           <div className="bg-slate-900/80 p-4 rounded-xl border border-emerald-500/40">
-            <span className="font-bold text-emerald-400 block mb-1">🥇 Top Elección ASICS: Novablast 4</span>
+            <span className="font-bold text-emerald-400 block mb-1">🥇 Mejor Calidad/Precio: Novablast 4</span>
             <p className="text-slate-300">
-              Si buscas el estándar de oro en 5:15/km, la <strong>Novablast 4</strong> está a <strong>90,00€ en ASICS Outlet</strong> y <strong>109,99€ en Decathlon España</strong>.
+              Si buscas el equilibrio ideal para 10 km a 5:15 min/km, la <strong>Novablast 4</strong> se encuentra desde <strong>104,95€ en Zalando</strong> y <strong>109,99€ en Alltricks</strong>.
             </p>
           </div>
         </div>

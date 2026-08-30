@@ -33,10 +33,10 @@ MODELS_DATA = [
         "why_fits": "👟 Tu zapatilla actual en uso. Nueva generación con espuma FlyteFoam Blast MAX, geometría en trampolín mejorada y máxima reactividad para tus 10 km a 5:15 min/km.",
         "decathlon_available": True,
         "stores": [
-            {"name": "Zalando España", "price": 134.95, "original": 150.00, "stock_42_5": True, "shipping": "Gratis"},
-            {"name": "Alltricks España 🚴", "price": 135.00, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
-            {"name": "Decathlon España 💙", "price": 139.99, "original": 150.00, "stock_42_5": True, "shipping": "Recogida 1h gratis / Domicilio"},
-            {"name": "ASICS Tienda Oficial 🏷️", "price": 140.00, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 50€"}
+            {"name": "Zalando España", "price": 139.95, "original": 150.00, "stock_42_5": True, "shipping": "Gratis (100 días dev.)", "url": "https://www.zalando.es/calzado-de-hombre-zapatillas-running/?q=asics+novablast+5"},
+            {"name": "Alltricks España 🚴", "price": 142.99, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/asics-novablast-5"},
+            {"name": "Decathlon España 💙", "price": 149.99, "original": 150.00, "stock_42_5": True, "shipping": "Envío Domicilio", "url": "https://www.decathlon.es/es/search?Ntt=asics+novablast+5"},
+            {"name": "ASICS Tienda Oficial 🏷️", "price": 150.00, "original": 150.00, "stock_42_5": True, "shipping": "Gratis OneASICS", "url": "https://www.asics.com/es/es-es/novablast-5/p/1011B863-001.html"}
         ]
     },
     {
@@ -47,51 +47,36 @@ MODELS_DATA = [
         "why_fits": "Perfecta para 5:15 min/km. FF Blast+ ECO con geometría trampolín para los 10 km.",
         "decathlon_available": True,
         "stores": [
-            {"name": "ASICS Outlet Oficial", "price": 90.00, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 50€"},
-            {"name": "Alltricks España 🚴", "price": 102.99, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
-            {"name": "Zalando España", "price": 104.93, "original": 150.00, "stock_42_5": True, "shipping": "Gratis"},
-            {"name": "Decathlon España 💙", "price": 109.99, "original": 150.00, "stock_42_5": True, "shipping": "Recogida 1h gratis / Envío"},
-            {"name": "Top4Running", "price": 118.20, "original": 150.00, "stock_42_5": True, "shipping": "3.90€"}
-        ]
-    },
-    {
-        "model": "Puma Velocity Nitro 3",
-        "brand": "Puma",
-        "category": "Daily Trainer Versátil / Rival Novablast",
-        "affinity": "96%",
-        "why_fits": "🔥 Gran alternativa a Novablast. Espuma Nitro inyectada con nitrógeno y la mejor suela del mercado (PumaGrip) para asfalto mojado.",
-        "decathlon_available": True,
-        "stores": [
-            {"name": "Zalando España", "price": 89.95, "original": 130.00, "stock_42_5": True, "shipping": "Gratis"},
-            {"name": "Alltricks España 🚴", "price": 92.50, "original": 130.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
-            {"name": "Decathlon Marketplace 💙", "price": 94.99, "original": 130.00, "stock_42_5": True, "shipping": "Gratis"},
-            {"name": "Runnerinn (Tradeinn)", "price": 96.00, "original": 130.00, "stock_42_5": True, "shipping": "2.99€"}
+            {"name": "Zalando España", "price": 104.95, "original": 150.00, "stock_42_5": True, "shipping": "Gratis", "url": "https://www.zalando.es/calzado-de-hombre-zapatillas-running/?q=asics+novablast+4"},
+            {"name": "Alltricks España 🚴", "price": 109.99, "original": 150.00, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/asics-novablast-4"},
+            {"name": "Runnerinn / Tradeinn", "price": 112.99, "original": 150.00, "stock_42_5": True, "shipping": "2.99€", "url": "https://www.tradeinn.com/runnerinn/es/calzado-hombre-zapatillas-running/asics-novablast/11075/s"},
+            {"name": "Decathlon España 💙", "price": 119.99, "original": 150.00, "stock_42_5": True, "shipping": "Envío Domicilio", "url": "https://www.decathlon.es/es/search?Ntt=asics+novablast+4"}
         ]
     },
     {
         "model": "Decathlon Kiprun KD900 Light",
         "brand": "Decathlon Kiprun",
-        "category": "Alternativa Decathlon a Novablast (200g)",
+        "category": "Alternativa Decathlon a Novablast (200g y Pebax®)",
         "affinity": "96%",
-        "why_fits": "⚡ Alternativa directa en Decathlon: Solo 200g y mediasuela Pebax® VFOAM para volar a 5:15 pace.",
+        "why_fits": "⚡ Alternativa directa en Decathlon: Solo 200g y mediasuela Pebax® VFOAM para volar a 5:15 pace con 60 días de prueba.",
         "decathlon_available": True,
         "stores": [
-            {"name": "Decathlon España Oficial 💙", "price": 89.99, "original": 120.00, "stock_42_5": True, "shipping": "Recogida 1h / Envío gratis"},
-            {"name": "Decathlon Outlet Online", "price": 95.00, "original": 120.00, "stock_42_5": True, "shipping": "Gratis en punto recogida"}
+            {"name": "Decathlon España Oficial 💙", "price": 69.99, "original": 109.99, "stock_42_5": True, "shipping": "Recogida 1h / Envío gratis", "url": "https://www.decathlon.es/es/search?Ntt=kiprun+kd900"},
+            {"name": "Alltricks España 🚴", "price": 74.99, "original": 109.99, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/kiprun-kd900"}
         ]
     },
     {
         "model": "ASICS GEL-Cumulus 26",
         "brand": "ASICS",
-        "category": "Daily Trainer Equilibrada (💥 Chollo Decathlon)",
+        "category": "Daily Trainer Equilibrada",
         "affinity": "95%",
-        "why_fits": "Ofertón en Decathlon (94.99€ en 42.5 EU). Zapatilla super equilibrada (255g) con PureGEL.",
+        "why_fits": "Zapatilla super equilibrada (255g) con PureGEL para rodajes diarios cómodos.",
         "decathlon_available": True,
         "stores": [
-            {"name": "Decathlon España 💙 (Chollo)", "price": 94.99, "original": 160.00, "stock_42_5": True, "shipping": "Recogida 1h gratis / Domicilio"},
-            {"name": "Alltricks España 🚴", "price": 98.50, "original": 160.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
-            {"name": "Runnerinn (Tradeinn)", "price": 99.90, "original": 160.00, "stock_42_5": True, "shipping": "2.99€"},
-            {"name": "Deporvillage", "price": 112.50, "original": 160.00, "stock_42_5": True, "shipping": "Gratis"}
+            {"name": "Runnerinn (Tradeinn)", "price": 99.99, "original": 160.00, "stock_42_5": True, "shipping": "2.99€", "url": "https://www.tradeinn.com/runnerinn/es/calzado-hombre-zapatillas-running/asics-cumulus/11075/s"},
+            {"name": "Alltricks España 🚴", "price": 104.99, "original": 160.00, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/asics-cumulus-26"},
+            {"name": "Zalando España", "price": 112.00, "original": 160.00, "stock_42_5": True, "shipping": "Gratis", "url": "https://www.zalando.es/calzado-de-hombre-zapatillas-running/?q=asics+cumulus+26"},
+            {"name": "Decathlon España 💙", "price": 129.99, "original": 160.00, "stock_42_5": True, "shipping": "Envío a Domicilio", "url": "https://www.decathlon.es/es/search?Ntt=asics+cumulus+26"}
         ]
     },
     {
@@ -102,10 +87,10 @@ MODELS_DATA = [
         "why_fits": "Máxima protección para rodillas y articulaciones en asfalto duro.",
         "decathlon_available": True,
         "stores": [
-            {"name": "Zalando España", "price": 139.95, "original": 200.00, "stock_42_5": True, "shipping": "Envío gratis"},
-            {"name": "Alltricks España 🚴", "price": 142.00, "original": 200.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
-            {"name": "Runnerinn (Tradeinn)", "price": 145.99, "original": 200.00, "stock_42_5": True, "shipping": "2.99€"},
-            {"name": "Decathlon España 💙", "price": 149.99, "original": 200.00, "stock_42_5": True, "shipping": "Envío gratis a domicilio"}
+            {"name": "Zalando España", "price": 139.95, "original": 200.00, "stock_42_5": True, "shipping": "Envío gratis", "url": "https://www.zalando.es/calzado-de-hombre-zapatillas-running/?q=asics+nimbus+26"},
+            {"name": "Alltricks España 🚴", "price": 144.99, "original": 200.00, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/asics-nimbus-26"},
+            {"name": "Runnerinn (Tradeinn)", "price": 145.99, "original": 200.00, "stock_42_5": True, "shipping": "2.99€", "url": "https://www.tradeinn.com/runnerinn/es/calzado-hombre-zapatillas-running/asics-nimbus/11075/s"},
+            {"name": "Decathlon España 💙", "price": 154.99, "original": 200.00, "stock_42_5": True, "shipping": "Envío gratis a domicilio", "url": "https://www.decathlon.es/es/search?Ntt=asics+nimbus+26"}
         ]
     },
     {
@@ -116,8 +101,8 @@ MODELS_DATA = [
         "why_fits": "☁️ La 'Nimbus' de Decathlon: Espuma MFOAM para amortiguar impactos por 60€ menos.",
         "decathlon_available": True,
         "stores": [
-            {"name": "Decathlon España (Club) 💙", "price": 79.99, "original": 130.00, "stock_42_5": True, "shipping": "Envío gratis"},
-            {"name": "Decathlon Marketplace", "price": 89.99, "original": 130.00, "stock_42_5": True, "shipping": "Gratis"}
+            {"name": "Decathlon España Oficial 💙", "price": 79.99, "original": 129.99, "stock_42_5": True, "shipping": "Recogida 1h / Envío gratis", "url": "https://www.decathlon.es/es/search?Ntt=kiprun+ks900"},
+            {"name": "Alltricks España 🚴", "price": 84.99, "original": 129.99, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/kiprun-ks900"}
         ]
     },
     {
@@ -128,10 +113,10 @@ MODELS_DATA = [
         "why_fits": "Ideal si notas fatiga en el arco o tobillo en los últimos km de tu tirada de 10 km.",
         "decathlon_available": True,
         "stores": [
-            {"name": "i-Run España", "price": 109.95, "original": 160.00, "stock_42_5": True, "shipping": "Gratis"},
-            {"name": "Alltricks España 🚴", "price": 112.90, "original": 160.00, "stock_42_5": True, "shipping": "Gratis > 49€"},
-            {"name": "Decathlon España 💙", "price": 114.99, "original": 160.00, "stock_42_5": True, "shipping": "Recogida 1h / Envío"},
-            {"name": "Top4Running", "price": 119.99, "original": 160.00, "stock_42_5": True, "shipping": "Gratis"}
+            {"name": "Runnerinn (Tradeinn)", "price": 109.95, "original": 160.00, "stock_42_5": True, "shipping": "2.99€", "url": "https://www.tradeinn.com/runnerinn/es/calzado-hombre-zapatillas-running/asics-gt-2000/11075/s"},
+            {"name": "Alltricks España 🚴", "price": 114.99, "original": 160.00, "stock_42_5": True, "shipping": "Gratis > 49€", "url": "https://www.alltricks.es/surl/asics-gt-2000"},
+            {"name": "Zalando España", "price": 119.95, "original": 160.00, "stock_42_5": True, "shipping": "Gratis", "url": "https://www.zalando.es/calzado-de-hombre-zapatillas-running/?q=asics+gt+2000"},
+            {"name": "Decathlon España 💙", "price": 124.99, "original": 160.00, "stock_42_5": True, "shipping": "Envío Domicilio", "url": "https://www.decathlon.es/es/search?Ntt=asics+gt-2000"}
         ]
     }
 ]

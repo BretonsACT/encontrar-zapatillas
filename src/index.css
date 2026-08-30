@@ -1,7 +1,10 @@
+@import "tailwindcss";
+
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+
 
   /* Color System */
   --bg-primary: #0a0d14;
