@@ -46,27 +46,35 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
         brand_badge_color = "#0284c7" if is_kiprun else "#06b6d4"
         brand_label = "Decathlon Kiprun" if is_kiprun else "ASICS"
         
-        # Build stores table rows
+        # Build stores table rows with direct buy buttons
         stores_rows = ""
         for s in m["stores"]:
-            stock_badge = '<span style="color: #10b981; font-weight: 600;">✓ Stock 42.5 EU OK</span>' if s["stock_42_5"] else '<span style="color: #ef4444;">Agotado</span>'
-            dec_highlight = ' background-color: rgba(6, 182, 212, 0.1);' if "Decathlon" in s["name"] else ''
+            stock_badge = '<span style="color: #10b981; font-weight: 600;">✓ Stock 42.5 EU OK</span>' if s.get("stock_42_5", True) else '<span style="color: #ef4444;">Agotado</span>'
+            dec_highlight = ' background-color: rgba(2, 132, 199, 0.15);' if "Decathlon" in s["name"] else ''
+            store_url = s.get("url", "https://www.decathlon.es" if "Decathlon" in s["name"] else "https://www.zalando.es")
             
             stores_rows += f"""
             <tr style="border-bottom: 1px solid #1e293b;{dec_highlight}">
                 <td style="padding: 10px 12px; font-weight: 600; color: #f8fafc;">{s['name']}</td>
                 <td style="padding: 10px 12px; color: #38bdf8; font-weight: 700; font-size: 15px;">{s['price']:.2f}€</td>
-                <td style="padding: 10px 12px; color: #94a3b8; text-decoration: line-through;">{s['original']}€</td>
+                <td style="padding: 10px 12px; color: #94a3b8; text-decoration: line-through;">{s['original']:.2f}€</td>
                 <td style="padding: 10px 12px;">{stock_badge}</td>
                 <td style="padding: 10px 12px; color: #cbd5e1; font-size: 12px;">{s['shipping']}</td>
+                <td style="padding: 10px 12px; text-align: right;">
+                    <a href="{store_url}" target="_blank" style="background-color: #0284c7; color: #ffffff; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 11px; display: inline-block;">Ver Oferta →</a>
+                </td>
             </tr>
             """
             
         decathlon_alert = ""
         if dec_store:
+            dec_url = dec_store.get("url", "https://www.decathlon.es")
             decathlon_alert = f"""
-            <div style="margin-top: 10px; background-color: #0369a1; background: linear-gradient(135deg, #0284c7, #0369a1); padding: 10px 14px; rounded-radius: 8px; border-radius: 8px; color: #ffffff; font-size: 13px;">
-                💙 <strong>Oferta Decathlon:</strong> <span style="font-size: 16px; font-weight: 800;">{dec_store['price']:.2f}€</span> | {dec_store['shipping']}
+            <div style="margin-top: 10px; background-color: #0369a1; background: linear-gradient(135deg, #0284c7, #0369a1); padding: 12px 16px; border-radius: 8px; color: #ffffff; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    💙 <strong>Oferta Decathlon:</strong> <span style="font-size: 16px; font-weight: 800;">{dec_store['price']:.2f}€</span> | {dec_store['shipping']}
+                </div>
+                <a href="{dec_url}" target="_blank" style="background-color: #ffffff; color: #0369a1; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 11px;">Ver en Decathlon →</a>
             </div>
             """
 
@@ -100,6 +108,7 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
                             <th style="padding: 8px 12px;">PVP Original</th>
                             <th style="padding: 8px 12px;">Stock 42.5 EU</th>
                             <th style="padding: 8px 12px;">Envío / Garantía</th>
+                            <th style="padding: 8px 12px; text-align: right;">Acceso Directo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,7 +127,7 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
     <title>👟 Informe Semanal de Zapatillas - Agente AI</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #020617; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e2e8f0;">
-    <div style="max-width: 680px; margin: 0 auto; padding: 24px 16px;">
+    <div style="max-width: 720px; margin: 0 auto; padding: 24px 16px;">
         
         <!-- Header -->
         <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid #38bdf8; border-radius: 16px; padding: 28px 24px; margin-bottom: 28px; text-align: center;">
@@ -140,7 +149,7 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
 
         <!-- Monitored stores strip -->
         <div style="background-color: #0f172a; border-radius: 10px; padding: 12px 16px; margin-bottom: 28px; text-align: center; font-size: 12px; color: #94a3b8; border: 1px solid #1e293b;">
-            🏪 <strong>Comercios Escaneados:</strong> Decathlon España 💙, ASICS Outlet 🏷️, Zalando 🛍️, Alltricks 🚴, Deporvillage, Top4Running, Tradeinn, i-Run.
+            🏪 <strong>Comercios Escaneados:</strong> Decathlon España 💙, ASICS Outlet 🏷️, Zalando 🛍️, Alltricks 🚴, Runnerinn / Tradeinn, Top4Running.
         </div>
 
         <!-- Shoe Cards -->
@@ -152,10 +161,10 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
                 ✔ Veredicto Semanal del Agente:
             </h3>
             <ol style="color: #e2e8f0; font-size: 14px; line-height: 1.8; margin-bottom: 0; padding-left: 20px;">
-                <li><strong>ASICS GEL-Cumulus 26</strong> (<span style="color: #38bdf8; font-weight: 700;">94.99€ en Decathlon España</span>): Chollo oficial con 41% DTO y opción de recogida en 1 hora.</li>
-                <li><strong>Decathlon Kiprun KD900 Light</strong> (<span style="color: #38bdf8; font-weight: 700;">89.99€ en Decathlon</span>): Alternativa ultraligera (200g) con espuma Pebax® VFOAM.</li>
-                <li><strong>ASICS Novablast 4</strong> (<span style="color: #10b981; font-weight: 700;">90.00€ en ASICS Outlet</span> / <span style="color: #38bdf8; font-weight: 700;">102.99€ en Alltricks</span>): La mejor zapatilla reactiva para 5:15 pace.</li>
-                <li><strong>Decathlon Kiprun KS900 2</strong> (<span style="color: #38bdf8; font-weight: 700;">79.99€ en Decathlon Club</span>): Confort total colchón MFOAM.</li>
+                <li><strong>ASICS Novablast 5</strong> (<span style="color: #34d399; font-weight: 700;">139.95€ en Zalando</span> / <span style="color: #38bdf8; font-weight: 700;">142.99€ en Alltricks</span>): Tu zapatilla actual en uso. Tope de gama en reactividad FF Blast MAX para 5:15 pace.</li>
+                <li><strong>Decathlon Kiprun KD900 Light</strong> (<span style="color: #38bdf8; font-weight: 700;">69.99€ en Decathlon</span>): Oferta estrella Decathlon (-36% DTO) con Pebax® VFOAM y solo 200g.</li>
+                <li><strong>ASICS Novablast 4</strong> (<span style="color: #34d399; font-weight: 700;">104.95€ en Zalando</span> / <span style="color: #38bdf8; font-weight: 700;">109.99€ en Alltricks</span>): Mejor relación calidad/precio para 10 km.</li>
+                <li><strong>Decathlon Kiprun KS900 2</strong> (<span style="color: #38bdf8; font-weight: 700;">79.99€ en Decathlon</span>): Confort total colchón MFOAM para protección articular.</li>
             </ol>
         </div>
 
