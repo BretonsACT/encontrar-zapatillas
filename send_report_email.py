@@ -49,7 +49,15 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
         # Build stores table rows with direct buy buttons
         stores_rows = ""
         for s in m["stores"]:
-            stock_badge = f'<span style="color: #10b981; font-weight: 600;">✓ Stock {size} EU OK</span>' if s.get("stock_42_5", True) else '<span style="color: #ef4444;">Agotado</span>'
+            avail_sizes = s.get("available_sizes") or []
+            sizes_preview = ", ".join(str(x) for x in avail_sizes[:6])
+            if s.get("stock_42_5", True):
+                sizes_sub = f'<div style="color: #64748b; font-size: 10px; margin-top: 2px;">Tallas: {sizes_preview}</div>' if sizes_preview else ''
+                stock_badge = f'<span style="color: #10b981; font-weight: 700;">✓ Stock {size} EU OK</span>{sizes_sub}'
+            else:
+                sizes_sub = f'<div style="color: #94a3b8; font-size: 10px; margin-top: 2px;">Hay: {sizes_preview} EU</div>' if sizes_preview else ''
+                stock_badge = f'<span style="color: #f59e0b; font-weight: 600;">Sin {size} EU</span>{sizes_sub}'
+
             dec_highlight = ' background-color: rgba(2, 132, 199, 0.15);' if "Decathlon" in s["name"] else ''
             store_url = s.get("url", "https://www.decathlon.es" if "Decathlon" in s["name"] else "https://www.zalando.es")
 
@@ -145,7 +153,7 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
         <!-- Header -->
         <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid #38bdf8; border-radius: 16px; padding: 28px 24px; margin-bottom: 28px; text-align: center;">
             <div style="display: inline-block; background-color: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.4); color: #38bdf8; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 12px;">
-                🤖 AGENTE BUSCADOR MULTI-TIENDA (TIEMPO REAL)
+                🔌 MCP EXTRACTOR MULTI-TIENDA • STOCK {size} EU VERIFICADO
             </div>
             <h1 style="color: #ffffff; font-size: 26px; font-weight: 900; margin: 0 0 10px 0; letter-spacing: -0.5px;">
                 👟 Informe Semanal de Chollos en Zapatillas
@@ -162,7 +170,7 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
 
         <!-- Monitored stores strip -->
         <div style="background-color: #0f172a; border-radius: 10px; padding: 12px 16px; margin-bottom: 28px; text-align: center; font-size: 12px; color: #94a3b8; border: 1px solid #1e293b;">
-            🏪 <strong>Comercios Escaneados:</strong> Decathlon España 💙, ASICS Outlet 🏷️, Zalando 🛍️, Alltricks 🚴, Runnerinn / Tradeinn, Top4Running.
+            🏪 <strong>Comercios Escaneados vía MCP:</strong> Decathlon España 💙, Alltricks 🚴, i-Run 🏃, Top4Running 🏃, ASICS Oficial 🏷️, Ekosport ⛰️, Running Emotion 👟.
         </div>
 
         <!-- Shoe Cards -->
@@ -171,7 +179,7 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
         <!-- Top Final Recommendations Summary -->
         <div style="background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); border: 1px solid #10b981; border-radius: 14px; padding: 20px; margin-bottom: 28px;">
             <h3 style="color: #34d399; margin-top: 0; font-size: 17px; font-weight: 800;">
-                ✔ Veredicto Semanal del Agente (Ordenado por Mejor Precio):
+                ✔ Veredicto Semanal del Agente (Ordenado por Mejor Precio con Stock {size} EU):
             </h3>
             <ol style="color: #e2e8f0; font-size: 14px; line-height: 1.8; margin-bottom: 0; padding-left: 20px;">
                 {verdict_items_html}
@@ -180,8 +188,8 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
 
         <!-- Footer -->
         <div style="text-align: center; font-size: 12px; color: #64748b; margin-top: 32px; border-t: 1px solid #1e293b; padding-top: 20px;">
-            <p>Este correo ha sido enviado automáticamente por el <strong>Agente Buscador de Zapatillas (Decathlon & Multi-Tienda)</strong>.</p>
-            <p style="font-size: 11px;">Configurado para ejecutarse todos los viernes por la mañana vía GitHub Actions.</p>
+            <p>Este correo ha sido generado por el <strong>Servidor MCP Extractor de Precios de Zapatillas (Decathlon & Multi-Tienda)</strong>.</p>
+            <p style="font-size: 11px;">Ejecutado automáticamente todos los viernes por la mañana vía GitHub Actions.</p>
         </div>
     </div>
 </body>
@@ -231,7 +239,7 @@ def main():
     sender_email = args.sender or os.environ.get("SMTP_USER") or os.environ.get("MAIL_USER")
     password = args.password or os.environ.get("SMTP_PASSWORD") or os.environ.get("MAIL_PASSWORD")
 
-    print("👟 Consultando precios en tiempo real con el Agente...")
+    print("👟 Consultando precios en tiempo real con el Servidor MCP...")
     models_data = agent_shoe_finder.fetch_live_prices_with_gemini(
         agent_shoe_finder.MODELS_DATA,
         size=args.size
@@ -239,14 +247,14 @@ def main():
 
     html_content = generate_html_report(models_data, size=args.size)
 
-    if args.preview or args.dry_run:
-        preview_file = "report_preview.html"
-        with open(preview_file, "w", encoding="utf-8") as f:
-            f.write(html_content)
-        print(f"📄 Vista previa guardada con éxito en {preview_file}")
-        if args.dry_run:
-            print("🚀 Dry-run finalizado sin errores.")
-            return
+    preview_file = "report_preview.html"
+    with open(preview_file, "w", encoding="utf-8") as f:
+        f.write(html_content)
+    print(f"📄 Vista previa guardada con éxito en {preview_file}")
+
+    if args.dry_run:
+        print("🚀 Dry-run finalizado sin errores.")
+        return
 
     subject = f"👟 Informe Semanal de Zapatillas ({args.size} EU) - Best Deals {datetime.now().strftime('%d/%m/%Y')}"
 

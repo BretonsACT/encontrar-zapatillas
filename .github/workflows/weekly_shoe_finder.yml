@@ -5,7 +5,18 @@ on:
     # Runs every Friday at 07:00 UTC (09:00 AM Spain CEST / Madrid Time)
     - cron: '0 7 * * 5'
   workflow_dispatch:
-    # Allows manual trigger anytime from GitHub Actions tab
+    inputs:
+      size:
+        description: 'Talla EU a escanear en el MCP'
+        required: false
+        default: '42.5'
+      recipient:
+        description: 'Correo destinatario del informe'
+        required: false
+        default: 'bretons@gmail.com'
+
+permissions:
+  contents: write
 
 jobs:
   run-agent-and-send-email:
@@ -25,16 +36,44 @@ jobs:
           python -m pip install --upgrade pip
           pip install httpx google-genai ddgs
 
-      - name: 👟 Run Sneaker Agent & Send HTML Email Report
+      - name: 🔌 Extract Live Shoe Prices via MCP Server
+        run: |
+          TARGET_SIZE="${{ github.event.inputs.size || '42.5' }}"
+          python3 mcp_shoe_prices.py --refresh --size "$TARGET_SIZE"
+
+      - name: 📧 Send Weekly HTML Email Report
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MAIL_USER: ${{ secrets.MAIL_USER }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
         run: |
+          TARGET_SIZE="${{ github.event.inputs.size || '42.5' }}"
+          TARGET_EMAIL="${{ github.event.inputs.recipient || 'bretons@gmail.com' }}"
           if [ -z "$MAIL_USER" ] || [ -z "$MAIL_PASSWORD" ]; then
             echo "⚠️ ADVERTENCIA: No se han configurado los secretos MAIL_USER / MAIL_PASSWORD en GitHub."
             echo "Generando vista previa local en modo dry-run..."
-            python3 send_report_email.py --to bretons@gmail.com --dry-run
+            python3 send_report_email.py --to "$TARGET_EMAIL" --size "$TARGET_SIZE" --dry-run
           else
-            python3 send_report_email.py --to bretons@gmail.com
+            python3 send_report_email.py --to "$TARGET_EMAIL" --size "$TARGET_SIZE"
           fi
+
+      - name: 💾 Update live_prices.json cache in repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/data/live_prices.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(mcp): auto-update live shoe prices cache [skip ci]"
+            git push
+          else
+            echo "No price changes to commit."
+          fi
+
+      - name: 📎 Upload HTML Report & JSON Cache Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-shoe-report
+          path: |
+            report_preview.html
+            src/data/live_prices.json
+          retention-days: 14
