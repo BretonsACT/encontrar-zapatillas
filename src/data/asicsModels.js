@@ -1,4 +1,6 @@
-export const ASICS_MODELS = [
+import livePricesData from './live_prices.json';
+
+const BASE_ASICS_MODELS = [
   {
     id: 'novablast-5',
     name: 'ASICS Novablast 5',
@@ -535,6 +537,76 @@ export const ASICS_MODELS = [
     ]
   }
 ];
+
+function getStoreLogo(name = '') {
+  const lower = name.toLowerCase();
+  if (lower.includes('decathlon')) return '💙';
+  if (lower.includes('alltricks')) return '🚴';
+  if (lower.includes('zalando')) return '🛍️';
+  if (lower.includes('asics')) return '🏷️';
+  if (lower.includes('i-run')) return '🏃';
+  if (lower.includes('top4running')) return '🏃';
+  if (lower.includes('corte')) return '🏬';
+  if (lower.includes('ekosport')) return '⛰️';
+  if (lower.includes('tradeinn') || lower.includes('runnerinn') || lower.includes('amazon')) return '📦';
+  return '👟';
+}
+
+const liveModelsMap = new Map(
+  (livePricesData?.models || []).map((m) => [m.id, m])
+);
+
+export const LIVE_PRICES_META = {
+  updatedAt: livePricesData?.updated_at || null,
+  sizeEu: livePricesData?.size_eu || '42.5',
+  source: livePricesData?.source || 'MCP Live Shoe Price Extractor'
+};
+
+export const ASICS_MODELS = BASE_ASICS_MODELS.map((baseModel) => {
+  const live = liveModelsMap.get(baseModel.id);
+  if (!live || !Array.isArray(live.stores) || live.stores.length === 0) {
+    return baseModel;
+  }
+
+  const mappedStores = live.stores.map((s) => ({
+    name: s.name,
+    logo: getStoreLogo(s.name),
+    price: Number(s.price),
+    originalPrice: Number(s.original || baseModel.basePrice),
+    sizeAvailable: s.stock_42_5
+      ? '42.5 EU (En Stock)'
+      : s.available_sizes?.length
+        ? `Tallas: ${s.available_sizes.slice(0, 4).join(', ')} EU`
+        : 'Consultar tallas',
+    stockStatus: s.stock_42_5 ? 'En Stock 42.5 EU' : 'Otras tallas',
+    stockLevel: s.stock_42_5 ? 'high' : 'low',
+    shipping: s.shipping || 'Envío estándar',
+    deliveryTime: '24h - 48h',
+    url: s.url,
+    verifiedReliability: s.stock_42_5 ? 'Stock 42.5 EU Verificado (MCP)' : 'Verificado (MCP)'
+  }));
+
+  const inStockStores = mappedStores.filter((s) => s.stockLevel === 'high');
+  const bestStore = (inStockStores.length > 0 ? inStockStores : mappedStores).reduce(
+    (min, s) => (s.price < min.price ? s : min),
+    mappedStores[0]
+  );
+  const basePrice = Number(bestStore.originalPrice || baseModel.basePrice);
+  const bestPrice = Number(bestStore.price);
+  const discountPercent = basePrice > bestPrice
+    ? Math.round(((basePrice - bestPrice) / basePrice) * 100)
+    : 0;
+
+  return {
+    ...baseModel,
+    name: live.model || baseModel.name,
+    basePrice,
+    bestPrice,
+    discountPercent,
+    updatedAt: live.updated_at,
+    stores: mappedStores
+  };
+});
 
 export const RELIABLE_STORES = [
   { name: 'Decathlon España 💙', domain: 'decathlon.es', TrustScore: '9.9/10', returnPolicy: '60 días gratis (3 años garantía)', isFeatured: true },

@@ -128,9 +128,30 @@ def _clean_json_response(text):
 
 def fetch_live_prices_with_gemini(models_template, size="42.5"):
     """
-    Actualiza los precios en tiempo real usando Gemini API (Free Tier) + Google Search Grounding.
-    Incluye fallback con DuckDuckGo Search si la cuenta gratuita tiene restricción de herramienta Search.
+    Actualiza los precios en tiempo real usando primero el Servidor MCP Extractor de Precios
+    (mcp_shoe_prices.py), que obtiene precios verificados, stock real por talla EU y enlaces directos
+    de las tiendas españolas y actualiza src/data/live_prices.json.
+    Si falla, usa la caché JSON del MCP o Gemini API como respaldo.
     """
+    try:
+        import mcp_shoe_prices
+
+        sys.stderr.write(f"🔌 [MCP shoe-prices] Extrayendo precios y stock verificado ({size} EU) en tiendas de España...\n")
+        live_mcp_data = mcp_shoe_prices.refresh_all_monitored_shoes(size=size, save_cache=True)
+        if live_mcp_data:
+            sys.stderr.write(f"✔ [MCP shoe-prices] {len(live_mcp_data)} modelos actualizados con precios y URLs reales en src/data/live_prices.json.\n")
+            return live_mcp_data
+    except Exception as mcp_err:
+        sys.stderr.write(f"⚠️ [MCP shoe-prices] Aviso al extraer en vivo ({mcp_err}). Intentando respaldo...\n")
+        try:
+            import mcp_shoe_prices
+
+            cached = mcp_shoe_prices.load_cached_or_live_prices(size=size, force_refresh=False)
+            if cached:
+                return cached
+        except Exception:
+            pass
+
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         sys.stderr.write("⚠️ [AVISO] GEMINI_API_KEY no definida. Usando precios estáticos de respaldo.\n")
@@ -264,9 +285,9 @@ def run_agent(brand, size, distance, pace, include_decathlon=True, json_output=F
     print(f"{CYAN}--------------------------------------------------------------------------------{RESET}\n")
 
     for idx, item in enumerate(filtered_data, 1):
-        best = min(item["stores"], key=lambda x: x["price"])
-        original_pvp = item["stores"][0]["original"]
-        discount = max(0, int(((original_pvp - best["price"]) / original_pvp) * 100))
+        best = min(item["stores"], key=lambda x: (not x.get("stock_42_5", True), x["price"]))
+        original_pvp = best.get("original") or item["stores"][0]["original"]
+        discount = max(0, int(((original_pvp - best["price"]) / original_pvp) * 100)) if original_pvp else 0
 
         brand_tag = f"{BLUE}[Decathlon Kiprun]{RESET}" if "Kiprun" in item["brand"] else f"{CYAN}[ASICS]{RESET}"
         decathlon_store = next((s for s in item["stores"] if "Decathlon" in s["name"]), None)
@@ -283,11 +304,14 @@ def run_agent(brand, size, distance, pace, include_decathlon=True, json_output=F
             print(f"      • {s['name']:<30} | {BOLD}{s['price']:>6.2f}€{RESET} (PVP: {s['original']}€) | {stock_str} | Envío: {s['shipping']}")
         print(f"{CYAN}--------------------------------------------------------------------------------{RESET}")
 
-    # Veredicto dinámico ordenado por mejor precio real
+    # Veredicto dinámico ordenado por mejor precio real con stock en la talla objetivo
     print(f"\n{BOLD}{GREEN}✔ VEREDICTO FINAL DEL AGENTE - TOP RECOMENDACIONES EN TIEMPO REAL:{RESET}")
-    ranked = sorted(filtered_data, key=lambda m: min(s["price"] for s in m["stores"]))
+    ranked = sorted(
+        filtered_data,
+        key=lambda m: min((not s.get("stock_42_5", True), s["price"]) for s in m["stores"]),
+    )
     for i, item in enumerate(ranked[:4], 1):
-        best_store = min(item["stores"], key=lambda s: s["price"])
+        best_store = min(item["stores"], key=lambda s: (not s.get("stock_42_5", True), s["price"]))
         print(f" {i}. {BOLD}{item['model']}{RESET} ({GREEN}{best_store['price']:.2f}€ en {best_store['name']}{RESET}): {item['why_fits']}")
     print()
 

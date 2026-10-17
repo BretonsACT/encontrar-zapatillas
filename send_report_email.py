@@ -22,9 +22,9 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
     # Calculate top recommendations
     models_with_best = []
     for item in models_data:
-        best_store = min(item["stores"], key=lambda x: x["price"])
-        orig_price = item["stores"][0]["original"]
-        discount_pct = max(0, int(((orig_price - best_store["price"]) / orig_price) * 100))
+        best_store = min(item["stores"], key=lambda x: (not x.get("stock_42_5", True), x["price"]))
+        orig_price = best_store.get("original") or item["stores"][0]["original"]
+        discount_pct = max(0, int(((orig_price - best_store["price"]) / orig_price) * 100)) if orig_price else 0
         decathlon_store = next((s for s in item["stores"] if "Decathlon" in s["name"]), None)
 
         models_with_best.append({
