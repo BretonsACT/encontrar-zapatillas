@@ -127,18 +127,48 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
         </div>
         """
 
-    # Build dynamic Top 4 Summary sorted by lowest price
-    ranked_deals = sorted(models_with_best, key=lambda x: x["best_store"]["price"])[:4]
-    verdict_items_html = ""
-    for deal in ranked_deals:
+    # Build top summary table (1 row per model with its single best price in 42.5 EU)
+    sorted_by_price = sorted(
+        models_with_best,
+        key=lambda x: (not x["best_store"].get("stock_42_5", True), x["best_store"]["price"])
+    )
+    top_summary_rows = ""
+    for rank, deal in enumerate(sorted_by_price, 1):
         m = deal["data"]
         best = deal["best_store"]
-        verdict_items_html += f"""
-                <li>
-                    <strong>{m['model']}</strong>
-                    (<span style="color: #34d399; font-weight: 700;">{best['price']:.2f}€ en {best['name']}</span>, -{deal['discount_pct']}% DTO):
-                    {m['why_fits']}
-                </li>"""
+        best_url = best.get("url", "https://www.decathlon.es")
+        stock_pill = (
+            f'<span style="color: #10b981; font-size: 11px; font-weight: 700;">✓ {size} EU en stock</span>'
+            if best.get("stock_42_5", True)
+            else f'<span style="color: #f59e0b; font-size: 11px;">Sin {size} EU</span>'
+        )
+        dto_badge = (
+            f'<span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px;">-{deal["discount_pct"]}%</span>'
+            if deal["discount_pct"] > 0
+            else ""
+        )
+        row_bg = "background-color: rgba(16, 185, 129, 0.07);" if rank == 1 else ""
+
+        top_summary_rows += f"""
+        <tr style="border-bottom: 1px solid #1e293b; {row_bg}">
+            <td style="padding: 12px 10px;">
+                <div style="font-weight: 800; color: #f8fafc; font-size: 14px;">{m['model']}</div>
+                <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">{m['category']}</div>
+            </td>
+            <td style="padding: 12px 10px; white-space: nowrap;">
+                <span style="color: #34d399; font-weight: 900; font-size: 17px;">{best['price']:.2f}€</span>
+                {dto_badge}
+                <div style="color: #64748b; font-size: 11px; text-decoration: line-through;">PVP: {deal['original_price']:.2f}€</div>
+            </td>
+            <td style="padding: 12px 10px;">
+                <div style="color: #e2e8f0; font-weight: 700; font-size: 13px;">{best['name']}</div>
+                <div>{stock_pill}</div>
+            </td>
+            <td style="padding: 12px 10px; text-align: right; white-space: nowrap;">
+                <a href="{best_url}" target="_blank" style="background-color: #10b981; color: #022c22; text-decoration: none; padding: 8px 14px; border-radius: 8px; font-weight: 800; font-size: 12px; display: inline-block;">Comprar →</a>
+            </td>
+        </tr>
+        """
 
     html = f"""<!DOCTYPE html>
 <html lang="es">
@@ -151,40 +181,50 @@ def generate_html_report(models_data, size="42.5", distance="10 km", pace="5:15"
     <div style="max-width: 720px; margin: 0 auto; padding: 24px 16px;">
 
         <!-- Header -->
-        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid #38bdf8; border-radius: 16px; padding: 28px 24px; margin-bottom: 28px; text-align: center;">
-            <div style="display: inline-block; background-color: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.4); color: #38bdf8; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 12px;">
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1px solid #38bdf8; border-radius: 16px; padding: 24px 20px; margin-bottom: 24px; text-align: center;">
+            <div style="display: inline-block; background-color: rgba(6, 182, 212, 0.15); border: 1px solid rgba(6, 182, 212, 0.4); color: #38bdf8; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 10px;">
                 🔌 MCP EXTRACTOR MULTI-TIENDA • STOCK {size} EU VERIFICADO
             </div>
-            <h1 style="color: #ffffff; font-size: 26px; font-weight: 900; margin: 0 0 10px 0; letter-spacing: -0.5px;">
-                👟 Informe Semanal de Chollos en Zapatillas
+            <h1 style="color: #ffffff; font-size: 24px; font-weight: 900; margin: 0 0 8px 0; letter-spacing: -0.5px;">
+                👟 Mejores Precios de la Semana ({size} EU)
             </h1>
-            <p style="color: #94a3b8; font-size: 14px; margin: 0 0 16px 0;">
-                Generado automáticamente el {now_str} para <strong>bretons@gmail.com</strong>
+            <p style="color: #94a3b8; font-size: 13px; margin: 0 0 14px 0;">
+                Actualizado el {now_str} • Perfil: <strong>{distance}</strong> a <strong>{pace} min/km</strong>
             </p>
+        </div>
 
-            <!-- Runner profile pill -->
-            <div style="background-color: #020617; border: 1px solid #334155; border-radius: 10px; padding: 12px 16px; font-size: 13px; color: #cbd5e1; display: inline-block; text-align: left;">
-                ⚡ <strong>Perfil Corredor:</strong> Hombre | Talla: <strong style="color: #10b981;">{size} EU</strong> (27cm) | <strong>{distance}</strong> a <strong style="color: #f59e0b;">{pace} min/km</strong> (3x/semana)
+        <!-- TOP SUMMARY TABLE: BEST PRICE PER MODEL RIGHT AT THE TOP -->
+        <div style="background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%); border: 2px solid #10b981; border-radius: 16px; padding: 20px; margin-bottom: 28px; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap;">
+                <h2 style="color: #34d399; margin: 0; font-size: 18px; font-weight: 900;">
+                    ⚡ Resumen Directo: Mejor Precio por Modelo (Talla {size} EU)
+                </h2>
+                <span style="color: #a7f3d0; font-size: 12px; font-weight: 600;">Ordenado de más barato a más caro</span>
+            </div>
+            <div style="overflow-x: auto; background-color: #090d16; border-radius: 12px; border: 1px solid #1e293b;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #1e293b; color: #94a3b8; font-size: 11px; text-transform: uppercase;">
+                            <th style="padding: 10px;">Zapatilla</th>
+                            <th style="padding: 10px;">Mejor Precio</th>
+                            <th style="padding: 10px;">Tienda Ganadora</th>
+                            <th style="padding: 10px; text-align: right;">Enlace Directo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {top_summary_rows}
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Monitored stores strip -->
-        <div style="background-color: #0f172a; border-radius: 10px; padding: 12px 16px; margin-bottom: 28px; text-align: center; font-size: 12px; color: #94a3b8; border: 1px solid #1e293b;">
-            🏪 <strong>Comercios Escaneados vía MCP:</strong> Decathlon España 💙, Alltricks 🚴, i-Run 🏃, Top4Running 🏃, ASICS Oficial 🏷️, Ekosport ⛰️, Running Emotion 👟.
-        </div>
+        <!-- Detailed Breakdown Header -->
+        <h3 style="color: #94a3b8; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 32px 0 16px 4px;">
+            📋 Detalle Completo por Modelo y Otras Tiendas:
+        </h3>
 
         <!-- Shoe Cards -->
         {items_html}
-
-        <!-- Top Final Recommendations Summary -->
-        <div style="background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); border: 1px solid #10b981; border-radius: 14px; padding: 20px; margin-bottom: 28px;">
-            <h3 style="color: #34d399; margin-top: 0; font-size: 17px; font-weight: 800;">
-                ✔ Veredicto Semanal del Agente (Ordenado por Mejor Precio con Stock {size} EU):
-            </h3>
-            <ol style="color: #e2e8f0; font-size: 14px; line-height: 1.8; margin-bottom: 0; padding-left: 20px;">
-                {verdict_items_html}
-            </ol>
-        </div>
 
         <!-- Footer -->
         <div style="text-align: center; font-size: 12px; color: #64748b; margin-top: 32px; border-t: 1px solid #1e293b; padding-top: 20px;">
