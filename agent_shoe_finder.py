@@ -159,8 +159,22 @@ def fetch_live_prices_with_gemini(models_template, size="42.5"):
     {json.dumps(models_template, ensure_ascii=False)}
     """
 
+    # Candidatos de modelo (priorizando gemini-3.8-flash y gemini-flash-latest según API actual)
+    candidate_models = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-2.5-flash"]
+    try:
+        available = [
+            m.name.replace("models/", "")
+            for m in client.models.list()
+            if "flash" in m.name.lower() and "tts" not in m.name.lower() and "image" not in m.name.lower()
+        ]
+        for m_name in available:
+            if m_name not in candidate_models:
+                candidate_models.append(m_name)
+    except Exception:
+        pass
+
     # Intento 1: Gemini con Google Search Grounding nativo (500 req/día gratis en Flash)
-    for model_name in ["gemini-2.5-flash", "gemini-2.0-flash"]:
+    for model_name in candidate_models[:4]:
         try:
             sys.stderr.write(f"🔍 Consultando precios en tiempo real con {model_name} + Google Search...\n")
             response = client.models.generate_content(
@@ -172,14 +186,17 @@ def fetch_live_prices_with_gemini(models_template, size="42.5"):
                 ),
             )
             updated_data = _clean_json_response(response.text)
-            sys.stderr.write("✔ Precios actualizados en tiempo real vía Google Search Grounding.\n")
+            sys.stderr.write(f"✔ Precios actualizados en tiempo real vía {model_name} + Google Search Grounding.\n")
             return updated_data
         except Exception as e:
             sys.stderr.write(f"⚠️ Intento con {model_name} (Search Grounding) falló: {e}\n")
 
     # Intento 2 (Fallback 100% gratuito): Búsqueda web con DuckDuckGo + extracción con Gemini sin tools
     try:
-        from duckduckgo_search import DDGS
+        try:
+            from ddgs import DDGS
+        except ImportError:
+            from duckduckgo_search import DDGS
         sys.stderr.write("🔍 Usando fallback gratuito DuckDuckGo Search + Gemini Flash...\n")
         search_context = []
         with DDGS() as ddgs:
@@ -198,17 +215,23 @@ def fetch_live_prices_with_gemini(models_template, size="42.5"):
         Plantilla JSON:
         {json.dumps(models_template, ensure_ascii=False)}
         """
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=fallback_prompt,
-            config=types.GenerateContentConfig(
-                response_mime_type="application/json",
-                temperature=0.1,
-            ),
-        )
-        updated_data = _clean_json_response(response.text)
-        sys.stderr.write("✔ Precios actualizados vía DuckDuckGo + Gemini.\n")
-        return updated_data
+        last_err = None
+        for model_name in candidate_models[:4]:
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=fallback_prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.1,
+                    ),
+                )
+                updated_data = _clean_json_response(response.text)
+                sys.stderr.write(f"✔ Precios actualizados vía DuckDuckGo + {model_name}.\n")
+                return updated_data
+            except Exception as e:
+                last_err = e
+        raise RuntimeError(last_err)
     except Exception as e:
         sys.stderr.write(f"❌ No se pudieron actualizar los precios en vivo ({e}). Usando caché local.\n")
         return models_template
