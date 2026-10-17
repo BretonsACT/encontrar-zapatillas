@@ -159,22 +159,21 @@ def fetch_live_prices_with_gemini(models_template, size="42.5"):
     {json.dumps(models_template, ensure_ascii=False)}
     """
 
-    # Candidatos de modelo (priorizando gemini-3.8-flash y gemini-flash-latest según API actual)
-    candidate_models = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-2.5-flash"]
+    # Candidatos de modelo (priorizando gemini-3.8-flash y modelos disponibles en la cuenta)
+    candidate_models = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-flash-lite-latest"]
     try:
-        available = [
-            m.name.replace("models/", "")
-            for m in client.models.list()
-            if "flash" in m.name.lower() and "tts" not in m.name.lower() and "image" not in m.name.lower()
-        ]
-        for m_name in available:
-            if m_name not in candidate_models:
-                candidate_models.append(m_name)
-    except Exception:
-        pass
+        for m in client.models.list():
+            m_name = m.name.replace("models/", "")
+            if ("gemini" in m_name.lower() or "gemma" in m_name.lower()) and not any(
+                x in m_name.lower() for x in ["tts", "image", "embedding", "veo", "imagen", "audio", "aqa", "2.0", "2.5"]
+            ):
+                if m_name not in candidate_models:
+                    candidate_models.append(m_name)
+    except Exception as e:
+        sys.stderr.write(f"⚠️ No se pudo listar modelos dinámicamente: {e}\n")
 
-    # Intento 1: Gemini con Google Search Grounding nativo (500 req/día gratis en Flash)
-    for model_name in candidate_models[:4]:
+    # Intento 1: Gemini con Google Search Grounding nativo
+    for model_name in candidate_models[:2]:
         try:
             sys.stderr.write(f"🔍 Consultando precios en tiempo real con {model_name} + Google Search...\n")
             response = client.models.generate_content(
@@ -197,17 +196,22 @@ def fetch_live_prices_with_gemini(models_template, size="42.5"):
             from ddgs import DDGS
         except ImportError:
             from duckduckgo_search import DDGS
-        sys.stderr.write("🔍 Usando fallback gratuito DuckDuckGo Search + Gemini Flash...\n")
+        sys.stderr.write("🔍 Usando fallback gratuito DuckDuckGo Search + Gemini...\n")
         search_context = []
         with DDGS() as ddgs:
             for item in models_template:
-                query = f"{item['model']} hombre precio comprar España Decathlon Zalando Alltricks Runnerinn"
-                results = list(ddgs.text(query, region="es-es", max_results=5))
+                query = f"{item['model']} precio comprar España"
+                results = []
+                try:
+                    results = list(ddgs.text(query, region="es-es", max_results=5))
+                except Exception as ddg_err:
+                    sys.stderr.write(f"   ℹ️ Aviso búsqueda DDG para '{item['model']}': {ddg_err}\n")
                 search_context.append({"model": item["model"], "search_results": results})
 
         fallback_prompt = f"""
-        A partir de los siguientes resultados de búsqueda recientes en España, actualiza los precios ('price') en euros
-        de la plantilla JSON para cada tienda. Ordena 'stores' de menor a mayor precio y devuelve SOLO el JSON válido.
+        A partir de los siguientes resultados de búsqueda recientes en España (y tu conocimiento actualizado del mercado español si algún resultado está vacío),
+        actualiza los precios ('price') en euros de la plantilla JSON para cada tienda.
+        Ordena 'stores' de menor a mayor precio y devuelve SOLO el JSON válido.
 
         Resultados de búsqueda actuales:
         {json.dumps(search_context, ensure_ascii=False)}
@@ -216,20 +220,22 @@ def fetch_live_prices_with_gemini(models_template, size="42.5"):
         {json.dumps(models_template, ensure_ascii=False)}
         """
         last_err = None
-        for model_name in candidate_models[:4]:
+        for model_name in candidate_models:
             try:
+                sys.stderr.write(f"🤖 Procesando resultados con {model_name} (sin Search tool)...\n")
+                cfg = types.GenerateContentConfig(temperature=0.1)
+                if "gemini" in model_name.lower():
+                    cfg.response_mime_type = "application/json"
                 response = client.models.generate_content(
                     model=model_name,
                     contents=fallback_prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        temperature=0.1,
-                    ),
+                    config=cfg,
                 )
                 updated_data = _clean_json_response(response.text)
                 sys.stderr.write(f"✔ Precios actualizados vía DuckDuckGo + {model_name}.\n")
                 return updated_data
             except Exception as e:
+                sys.stderr.write(f"⚠️ Fallback con {model_name} falló: {e}\n")
                 last_err = e
         raise RuntimeError(last_err)
     except Exception as e:
