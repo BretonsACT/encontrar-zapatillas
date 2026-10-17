@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-17 12:32:21",
+  "updated_at": "2026-10-17 10:48:24",
   "size_eu": "42.5",
   "source": "MCP Live Shoe Price Extractor (Runnea + Multi-Store España)",
   "models": [
@@ -11,7 +11,7 @@
       "affinity": "99%",
       "why_fits": "👟 Tu zapatilla actual en uso. Nueva generación con espuma FlyteFoam Blast MAX, geometría en trampolín mejorada y máxima reactividad para tus 10 km a 5:15 min/km.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "Alltricks España 🚴",
@@ -98,7 +98,7 @@
       "affinity": "98%",
       "why_fits": "Perfecta para 5:15 min/km. Geometría trampolín y espuma FF Blast+ ECO / MAX para los 10 km.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "Decathlon España 💙",
@@ -224,7 +224,7 @@
       "affinity": "96%",
       "why_fits": "⚡ Alternativa directa en Decathlon: Mediasuela reactiva VFOAM / Pebax® para volar a 5:15 pace con 60 días de prueba.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "Decathlon España Oficial 💙",
@@ -275,7 +275,7 @@
       "affinity": "95%",
       "why_fits": "Zapatilla super equilibrada (~255g) con PureGEL y FF Blast+ para rodajes diarios cómodos de 10 km.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "MioMioRun (GEL-Cumulus 28)",
@@ -380,7 +380,7 @@
       "affinity": "94%",
       "why_fits": "Máxima protección PureGEL + FF Blast+ ECO para rodillas y articulaciones en asfalto duro.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "i-Run España 🏃 (GEL-Nimbus 28)",
@@ -487,7 +487,7 @@
       "affinity": "93%",
       "why_fits": "☁️ La 'Nimbus' de Decathlon: Espuma MFOAM ultra amortiguada para proteger articulaciones por mucho menos.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "Decathlon España Oficial 💙",
@@ -522,7 +522,7 @@
       "affinity": "90%",
       "why_fits": "Ideal si notas fatiga en el arco o tobillo en los últimos km de tu tirada de 10 km gracias al 3D Guidance System.",
       "decathlon_available": true,
-      "updated_at": "2026-10-17 12:32:21",
+      "updated_at": "2026-10-17 10:48:24",
       "stores": [
         {
           "name": "i-Run España 🏃 (GT-2000 14)",
