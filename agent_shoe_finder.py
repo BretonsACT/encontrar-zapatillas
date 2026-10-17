@@ -1,15 +1,9 @@
-#!/usr/bin/env python3
+##!/usr/bin/env python3
 """
-Agente Buscador de Zapatillas Multi-Tienda (Decathlon + ASICS + Modelos Similares)
-Especificaciones por Defecto del Usuario:
- - Género: Hombre
- - Talla: 42.5 EU (US 9 / 27cm)
- - Distancia: 10 km por sesión
- - Ritmo: 5:15 min/km
- - Frecuencia: 3 veces por semana (~30 km/semana)
- - Tiendas Especiales: Decathlon España (Ofertas ASICS + Gama Kiprun)
+Agente Buscador de Zapatillas Multi-Tienda con Precios en Tiempo Real (Gemini Free Tier)
 """
 
+import os
 import sys
 import json
 import argparse
@@ -21,9 +15,9 @@ YELLOW = "\033[93m"
 BLUE = "\033[94m"
 RED = "\033[91m"
 BOLD = "\033[1m"
-MAGENTA = "\033[95m"
 RESET = "\033[0m"
 
+# Plantilla base (se usa como estructura y fallback si no hay conexión)
 MODELS_DATA = [
     {
         "model": "ASICS Novablast 5",
@@ -121,10 +115,112 @@ MODELS_DATA = [
     }
 ]
 
+
+def _clean_json_response(text):
+    """Extrae el bloque JSON limpio de la respuesta de Gemini."""
+    text = text.strip()
+    if "```json" in text:
+        text = text.split("```json")[1].split("```")[0].strip()
+    elif "```" in text:
+        text = text.split("```")[1].split("```")[0].strip()
+    return json.loads(text)
+
+
+def fetch_live_prices_with_gemini(models_template, size="42.5"):
+    """
+    Actualiza los precios en tiempo real usando Gemini API (Free Tier) + Google Search Grounding.
+    Incluye fallback con DuckDuckGo Search si la cuenta gratuita tiene restricción de herramienta Search.
+    """
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        sys.stderr.write("⚠️ [AVISO] GEMINI_API_KEY no definida. Usando precios estáticos de respaldo.\n")
+        return models_template
+
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError:
+        sys.stderr.write("⚠️ [AVISO] Librería 'google-genai' no instalada. Ejecuta: pip install google-genai\n")
+        return models_template
+
+    client = genai.Client(api_key=api_key)
+
+    prompt = f"""
+    Busca en tiempo real los precios actuales en España (en euros) para cada una de estas zapatillas de running de hombre (talla {size} EU) en las tiendas indicadas (Zalando España, Alltricks España, Decathlon España, Runnerinn / Tradeinn, ASICS Tienda Oficial).
+
+    Instrucciones estrictas:
+    1. Actualiza el campo 'price' (float) de cada tienda con el precio de oferta actual real encontrado hoy en España.
+    2. Actualiza 'stock_42_5' (boolean) a false si ves explícitamente que el modelo está agotado en esa tienda, o true si está disponible.
+    3. Si encuentras la URL directa al producto en esa tienda, actualiza 'url', si no, conserva la URL existente.
+    4. Ordena la lista 'stores' de cada zapatilla de menor a mayor precio.
+    5. Devuelve ÚNICAMENTE el JSON válido con exactamente la misma estructura y claves que la plantilla. No incluyas texto adicional.
+
+    Plantilla JSON a actualizar:
+    {json.dumps(models_template, ensure_ascii=False)}
+    """
+
+    # Intento 1: Gemini con Google Search Grounding nativo (500 req/día gratis en Flash)
+    for model_name in ["gemini-2.5-flash", "gemini-2.0-flash"]:
+        try:
+            sys.stderr.write(f"🔍 Consultando precios en tiempo real con {model_name} + Google Search...\n")
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    tools=[types.Tool(google_search=types.GoogleSearch())],
+                    temperature=0.1,
+                ),
+            )
+            updated_data = _clean_json_response(response.text)
+            sys.stderr.write("✔ Precios actualizados en tiempo real vía Google Search Grounding.\n")
+            return updated_data
+        except Exception as e:
+            sys.stderr.write(f"⚠️ Intento con {model_name} (Search Grounding) falló: {e}\n")
+
+    # Intento 2 (Fallback 100% gratuito): Búsqueda web con DuckDuckGo + extracción con Gemini sin tools
+    try:
+        from duckduckgo_search import DDGS
+        sys.stderr.write("🔍 Usando fallback gratuito DuckDuckGo Search + Gemini Flash...\n")
+        search_context = []
+        with DDGS() as ddgs:
+            for item in models_template:
+                query = f"{item['model']} hombre precio comprar España Decathlon Zalando Alltricks Runnerinn"
+                results = list(ddgs.text(query, region="es-es", max_results=5))
+                search_context.append({"model": item["model"], "search_results": results})
+
+        fallback_prompt = f"""
+        A partir de los siguientes resultados de búsqueda recientes en España, actualiza los precios ('price') en euros
+        de la plantilla JSON para cada tienda. Ordena 'stores' de menor a mayor precio y devuelve SOLO el JSON válido.
+
+        Resultados de búsqueda actuales:
+        {json.dumps(search_context, ensure_ascii=False)}
+
+        Plantilla JSON:
+        {json.dumps(models_template, ensure_ascii=False)}
+        """
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=fallback_prompt,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                temperature=0.1,
+            ),
+        )
+        updated_data = _clean_json_response(response.text)
+        sys.stderr.write("✔ Precios actualizados vía DuckDuckGo + Gemini.\n")
+        return updated_data
+    except Exception as e:
+        sys.stderr.write(f"❌ No se pudieron actualizar los precios en vivo ({e}). Usando caché local.\n")
+        return models_template
+
+
 def run_agent(brand, size, distance, pace, include_decathlon=True, json_output=False):
-    filtered_data = MODELS_DATA
+    # Obtener precios en vivo antes de filtrar o imprimir
+    live_data = fetch_live_prices_with_gemini(MODELS_DATA, size=size)
+
+    filtered_data = live_data
     if not include_decathlon:
-        filtered_data = [m for m in MODELS_DATA if m["brand"] == "ASICS"]
+        filtered_data = [m for m in live_data if m["brand"] == "ASICS"]
 
     if json_output:
         print(json.dumps(filtered_data, indent=2, ensure_ascii=False))
@@ -135,33 +231,37 @@ def run_agent(brand, size, distance, pace, include_decathlon=True, json_output=F
     print(f"{BOLD}{CYAN}════════════════════════════════════════════════════════════════════════════════{RESET}")
     print(f" {BOLD}Perfil Corredor:{RESET} Hombre | Talla: {GREEN}{size} EU{RESET} (27cm / US 9)")
     print(f" {BOLD}Entrenamiento:{RESET} {distance} por sesión | Ritmo: {YELLOW}{pace} min/km{RESET} | 3x/semana (~30 km/sem)")
-    print(f" {BOLD}Comercios Escaneados:{RESET} {BLUE}Decathlon España 💙{RESET}, ASICS Outlet, Zalando, Alltricks 🚴, Deporvillage, Top4Running, Tradeinn")
+    print(f" {BOLD}Comercios Escaneados:{RESET} {BLUE}Decathlon España 💙{RESET}, ASICS Outlet, Zalando, Alltricks 🚴, Tradeinn")
     print(f"{CYAN}--------------------------------------------------------------------------------{RESET}\n")
 
     for idx, item in enumerate(filtered_data, 1):
         best = min(item["stores"], key=lambda x: x["price"])
-        discount = int(((item["stores"][0]["original"] - best["price"]) / item["stores"][0]["original"]) * 100)
-        
+        original_pvp = item["stores"][0]["original"]
+        discount = max(0, int(((original_pvp - best["price"]) / original_pvp) * 100))
+
         brand_tag = f"{BLUE}[Decathlon Kiprun]{RESET}" if "Kiprun" in item["brand"] else f"{CYAN}[ASICS]{RESET}"
         decathlon_store = next((s for s in item["stores"] if "Decathlon" in s["name"]), None)
 
         print(f"{BOLD}{idx}. {item['model']}{RESET}  {brand_tag}  [{CYAN}{item['category']}{RESET}]  (Afín: {GREEN}{item['affinity']}{RESET})")
         print(f"   💡 {item['why_fits']}")
-        print(f"   🔥 Best Price en 42.5 EU: {BOLD}{GREEN}{best['price']:.2f}€{RESET} en {best['name']} (-{discount}% DTO)")
+        print(f"   🔥 Best Price en {size} EU: {BOLD}{GREEN}{best['price']:.2f}€{RESET} en {best['name']} (-{discount}% DTO)")
         if decathlon_store:
             print(f"   💙 Oferta Decathlon: {BOLD}{BLUE}{decathlon_store['price']:.2f}€{RESET} | {decathlon_store['shipping']}")
 
         print(f"   🛒 Comparativa de Tiendas:")
         for s in item["stores"]:
-            stock_str = f"{GREEN}Stock 42.5 EU OK{RESET}" if s["stock_42_5"] else f"{RED}Agotado{RESET}"
+            stock_str = f"{GREEN}Stock {size} EU OK{RESET}" if s["stock_42_5"] else f"{RED}Agotado{RESET}"
             print(f"      • {s['name']:<30} | {BOLD}{s['price']:>6.2f}€{RESET} (PVP: {s['original']}€) | {stock_str} | Envío: {s['shipping']}")
         print(f"{CYAN}--------------------------------------------------------------------------------{RESET}")
 
-    print(f"\n{BOLD}{GREEN}✔ VEREDICTO FINAL DEL AGENTE - TOP RECOMENDACIONES EN DECATHLON Y OUTLETS:{RESET}")
-    print(f" 1. {BOLD}ASICS GEL-Cumulus 26{RESET} ({BLUE}94.99€ en Decathlon España{RESET}): Mejor chollo oficial ASICS con 41% DTO y recogida en 1 hora.")
-    print(f" 2. {BOLD}Decathlon Kiprun KD900 Light{RESET} ({BLUE}89.99€ en Decathlon{RESET}): La alternativa directa a la Novablast 4 con Pebax VFOAM y solo 200g.")
-    print(f" 3. {BOLD}ASICS Novablast 4{RESET} ({GREEN}90.00€ en ASICS Outlet{RESET} / {BLUE}109.99€ en Decathlon{RESET}): La zapatilla #1 para ritmos de 5:15 min/km.")
-    print(f" 4. {BOLD}Decathlon Kiprun KS900 2{RESET} ({BLUE}79.99€ en Decathlon Club{RESET}): Máxima amortiguación colchón MFOAM para rodar suave.\n")
+    # Veredicto dinámico ordenado por mejor precio real
+    print(f"\n{BOLD}{GREEN}✔ VEREDICTO FINAL DEL AGENTE - TOP RECOMENDACIONES EN TIEMPO REAL:{RESET}")
+    ranked = sorted(filtered_data, key=lambda m: min(s["price"] for s in m["stores"]))
+    for i, item in enumerate(ranked[:4], 1):
+        best_store = min(item["stores"], key=lambda s: s["price"])
+        print(f" {i}. {BOLD}{item['model']}{RESET} ({GREEN}{best_store['price']:.2f}€ en {best_store['name']}{RESET}): {item['why_fits']}")
+    print()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Agente Buscador de Zapatillas Multi-Tienda (Decathlon & ASICS)")
@@ -171,6 +271,6 @@ if __name__ == "__main__":
     parser.add_argument("--pace", default="5:15", help="Ritmo habitual por km")
     parser.add_argument("--decathlon", action="store_true", default=True, help="Incluir búsqueda y ofertas en Decathlon")
     parser.add_argument("--json", action="store_true", help="Salida en formato JSON")
-    
+
     args = parser.parse_args()
     run_agent(args.brand, args.size, args.distance, args.pace, include_decathlon=args.decathlon, json_output=args.json)
