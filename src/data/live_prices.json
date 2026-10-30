@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23 12:19:08",
+  "updated_at": "2026-10-30 13:44:42",
   "size_eu": "42.5",
   "source": "MCP Live Shoe Price Extractor (Runnea + Multi-Store España)",
   "models": [
@@ -11,7 +11,7 @@
       "affinity": "99%",
       "why_fits": "👟 Tu zapatilla actual en uso. Nueva generación con espuma FlyteFoam Blast MAX, geometría en trampolín mejorada y máxima reactividad para tus 10 km a 5:15 min/km.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
         {
           "name": "Alltricks España 🚴",
@@ -33,14 +33,14 @@
         },
         {
           "name": "Amazon España 📦",
-          "price": 147.03,
+          "price": 149.0,
           "original": 150.0,
           "stock_42_5": true,
           "available_sizes": [
             "42.5"
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://www.amazon.es/dp/B0FYQM7MTC/ref=asc_df_B0FYQM7MTC1792684800000?ie=UTF8&linkCode=xm2&tag=gt-1-1-21&linkCode=df0&psc=1"
+          "url": "https://www.amazon.es/dp/B0FYQNC8DP/ref=asc_df_B0FYQNC8DP1793289600000?ie=UTF8&linkCode=xm2&tag=gt-1-1-21&linkCode=df0&psc=1"
         },
         {
           "name": "Decathlon España 💙",
@@ -52,7 +52,7 @@
         },
         {
           "name": "Ekosport España ⛰️",
-          "price": 103.41,
+          "price": 114.9,
           "original": 150.0,
           "stock_42_5": false,
           "available_sizes": [
@@ -62,28 +62,27 @@
           "url": "https://www.ekosport.es/asics-novablast-5-p-K113892?tai=K113892V385&utm_source=Runnea&utm_medium=cpc&utm_campaign=K113892V385&flt=157&subid=_sidi_or_org_yyyes_esc_yyytn3o291yyycn1o1039307_sidf_"
         },
         {
-          "name": "Top4Running 🏃",
-          "price": 111.0,
+          "name": "i-Run España 🏃",
+          "price": 115.0,
+          "original": 150.0,
+          "stock_42_5": false,
+          "available_sizes": [
+            "40.5",
+            "41.5"
+          ],
+          "shipping": "Envío gratis • Tallas: 40.5, 41.5 EU",
+          "url": "https://faf.i-run.es/?P4F4735849BB221S1UD413a4d0184176V4&argsite=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1039307_sidf_&gdpr=__gdpr_consent--702__&flt=66&subid=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1039307_sidf_"
+        },
+        {
+          "name": "Running Emotion 👟",
+          "price": 119.99,
           "original": 150.0,
           "stock_42_5": false,
           "available_sizes": [
             "46.5"
           ],
           "shipping": "Envío gratis • Tallas: 46.5 EU",
-          "url": "https://top4running.es/p/asics-novablast-5-1011b974-800"
-        },
-        {
-          "name": "i-Run España 🏃",
-          "price": 115.0,
-          "original": 150.0,
-          "stock_42_5": false,
-          "available_sizes": [
-            "40",
-            "40.5",
-            "41.5"
-          ],
-          "shipping": "Envío gratis • Tallas: 40, 40.5, 41.5 EU",
-          "url": "https://faf.i-run.es/?P4F4735849BB221S1UD413a4d0184176V4&argsite=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1039307_sidf_&gdpr=__gdpr_consent--702__&flt=66&subid=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1039307_sidf_"
+          "url": "https://www.runningemotion.com/es/comprar/zapatilla/asics/novablast-5-sky-lemon-spark"
         }
       ]
     },
@@ -95,7 +94,7 @@
       "affinity": "98%",
       "why_fits": "Perfecta para 5:15 min/km. Geometría trampolín y espuma FF Blast+ ECO / MAX para los 10 km.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
         {
           "name": "Decathlon España 💙",
@@ -104,27 +103,6 @@
           "stock_42_5": true,
           "shipping": "Envío Domicilio",
           "url": "https://www.decathlon.es/es/search?Ntt=asics+novablast"
-        },
-        {
-          "name": "Ekosport España ⛰️ (Novablast 6)",
-          "price": 127.71,
-          "original": 160.0,
-          "stock_42_5": true,
-          "available_sizes": [
-            "40.5",
-            "41.5",
-            "42",
-            "42.5",
-            "43.5",
-            "44",
-            "44.5",
-            "45",
-            "46",
-            "46.5",
-            "47"
-          ],
-          "shipping": "Envío 1€ • En stock (42.5 EU)",
-          "url": "https://www.ekosport.es/asics-novablast-6-p-K128611?tai=K128611V420&utm_source=Runnea&utm_medium=cpc&utm_campaign=K128611V420&flt=157&subid=_sidi_or_org_yyyes_esc_yyytn3o291yyycn1o1063395_sidf_"
         },
         {
           "name": "Atmósfera Sport 👟 (Novablast 6)",
@@ -187,12 +165,11 @@
           "url": "https://www.awin1.com/cread.php?awinmid=27904&awinaffid=324419&ued=https://www.sprintersports.com/asics-novablast-6-0414645&flt=133"
         },
         {
-          "name": "Deporvillage 🚴 (Novablast 6)",
-          "price": 136.0,
+          "name": "Alltricks España 🚴 (Novablast 6)",
+          "price": 134.99,
           "original": 160.0,
           "stock_42_5": true,
           "available_sizes": [
-            "40",
             "40.5",
             "41.5",
             "42",
@@ -204,11 +181,31 @@
             "46",
             "46.5",
             "47",
-            "48",
-            "49"
+            "48"
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://www.deporvillage.com/zapatillas-asics-novablast-6-azul-verdaceo?flt=108&subid=_sidi_or_org_yyyes_esc_yyytn3o1119yyycn1o1063395_sidf_&utm_source=runnea&utm_medium=afiliados&utm_campaign=es_conv_runnea-organic"
+          "url": "https://www.alltricks.es/F-11912-chaussures-running/P-3289569-zapatillas_de_running_asics_novablast_6_azules_para_hombre"
+        },
+        {
+          "name": "Ekosport España ⛰️ (Novablast 6)",
+          "price": 141.9,
+          "original": 160.0,
+          "stock_42_5": true,
+          "available_sizes": [
+            "40.5",
+            "41.5",
+            "42",
+            "42.5",
+            "43.5",
+            "44",
+            "44.5",
+            "45",
+            "46",
+            "46.5",
+            "47"
+          ],
+          "shipping": "Envío 1€ • En stock (42.5 EU)",
+          "url": "https://www.ekosport.es/asics-novablast-6-p-K128611?tai=K128611V420&utm_source=Runnea&utm_medium=cpc&utm_campaign=K128611V420&flt=157&subid=_sidi_or_org_yyyes_esc_yyytn3o291yyycn1o1063395_sidf_"
         }
       ]
     },
@@ -220,7 +217,7 @@
       "affinity": "96%",
       "why_fits": "⚡ Alternativa directa en Decathlon: Mediasuela reactiva VFOAM / Pebax® para volar a 5:15 pace con 60 días de prueba.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
         {
           "name": "Alltricks España 🚴 (Kipcore)",
@@ -271,7 +268,7 @@
       "affinity": "95%",
       "why_fits": "Zapatilla super equilibrada (~255g) con PureGEL y FF Blast+ para rodajes diarios cómodos de 10 km.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
         {
           "name": "MioMioRun (GEL-Cumulus 28)",
@@ -283,16 +280,17 @@
             "44.5",
             "46"
           ],
-          "shipping": "Envío 10€ • En stock (42.5 EU)",
-          "url": "https://www.miomiorun.com/es/producto/gel-cumulus-28-hombre/?attribute_pa_colore=cumulus-28-cold-moss-vital-green&attribute_pa_size=46-es&flt=85&subid=_sidi_or_org_yyyes_esc_yyytn3o1709yyycn1o1062931_sidf_"
+          "shipping": "Envío gratis • En stock (42.5 EU)",
+          "url": "https://www.miomiorun.com/prodotto/gel-cumulus-28-uomo/?attribute_pa_colore=cumulus-28-cold-moss-vital-green&attribute_pa_size=46-es&flt=85&subid=_sidi_or_org_yyyes_esc_yyytn3o1709yyycn1o1062931_sidf_"
         },
         {
-          "name": "Ekosport España ⛰️ (GEL-Cumulus 28)",
-          "price": 103.41,
+          "name": "Alltricks España 🚴 (GEL-Cumulus 28)",
+          "price": 104.99,
           "original": 160.0,
           "stock_42_5": true,
           "available_sizes": [
             "40.5",
+            "41.5",
             "42",
             "42.5",
             "43.5",
@@ -302,12 +300,12 @@
             "46",
             "46.5"
           ],
-          "shipping": "Envío 1€ • En stock (42.5 EU)",
-          "url": "https://www.ekosport.es/asics-gel-cumulus-28-p-K113897?tai=K113897V415&utm_source=Runnea&utm_medium=cpc&utm_campaign=K113897V415&flt=157&subid=_sidi_or_org_yyyes_esc_yyytn3o291yyycn1o1062931_sidf_"
+          "shipping": "Envío gratis • En stock (42.5 EU)",
+          "url": "https://www.alltricks.es/F-11912-chaussures-running/P-3289542-zapatillas_de_running_asics_gel_cumulus_28_beige_verde_para_hombre"
         },
         {
           "name": "i-Run España 🏃 (GEL-Cumulus 28)",
-          "price": 107.0,
+          "price": 105.0,
           "original": 160.0,
           "stock_42_5": true,
           "available_sizes": [
@@ -323,11 +321,28 @@
             "46",
             "46.5",
             "47",
-            "48",
             "49"
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
           "url": "https://faf.i-run.es/?P4F4735849BB221S1UD413a4d0275832V4&argsite=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1062931_sidf_&gdpr=__gdpr_consent--702__&flt=66&subid=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1062931_sidf_"
+        },
+        {
+          "name": "Top4Running 🏃 (GEL-Cumulus 28)",
+          "price": 105.6,
+          "original": 160.0,
+          "stock_42_5": true,
+          "available_sizes": [
+            "42",
+            "42.5",
+            "43.5",
+            "44",
+            "44.5",
+            "45",
+            "46",
+            "46.5"
+          ],
+          "shipping": "Envío gratis • En stock (42.5 EU)",
+          "url": "https://top4running.es/p/asics-gel-cumulus-28-1011c143-401"
         },
         {
           "name": "Sprinter (GEL-Cumulus 28)",
@@ -344,21 +359,6 @@
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
           "url": "https://www.awin1.com/cread.php?awinmid=27904&awinaffid=324419&ued=https://www.sprintersports.com/asics-gel-cumulus-28-0414676&flt=133"
-        },
-        {
-          "name": "Top4Running 🏃 (GEL-Cumulus 28)",
-          "price": 111.9,
-          "original": 160.0,
-          "stock_42_5": true,
-          "available_sizes": [
-            "42",
-            "42.5",
-            "43.5",
-            "44",
-            "44.5"
-          ],
-          "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://top4running.es/p/asics-gel-cumulus-28-1011c143-250"
         },
         {
           "name": "Decathlon España 💙",
@@ -378,8 +378,31 @@
       "affinity": "94%",
       "why_fits": "Máxima protección PureGEL + FF Blast+ ECO para rodillas y articulaciones en asfalto duro.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
+        {
+          "name": "Alltricks España 🚴 (GEL-Nimbus 28)",
+          "price": 134.99,
+          "original": 200.0,
+          "stock_42_5": true,
+          "available_sizes": [
+            "39",
+            "40",
+            "40.5",
+            "41.5",
+            "42",
+            "42.5",
+            "43.5",
+            "44",
+            "44.5",
+            "45",
+            "46",
+            "46.5",
+            "47"
+          ],
+          "shipping": "Envío gratis • En stock (42.5 EU)",
+          "url": "https://www.alltricks.es/F-11912-chaussures-running/P-3289512-zapatillas_de_running_asics_gel_nimbus_28_azul_verde_para_hombre"
+        },
         {
           "name": "i-Run España 🏃 (GEL-Nimbus 28)",
           "price": 135.0,
@@ -392,10 +415,13 @@
             "42",
             "42.5",
             "43.5",
-            "44"
+            "44",
+            "46.5",
+            "47",
+            "49"
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://faf.i-run.es/?P4F4735849BB221S1UD413a4d0191467V4&argsite=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1058964_sidf_&gdpr=__gdpr_consent--702__&flt=66&subid=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1058964_sidf_"
+          "url": "https://faf.i-run.es/?P4F4735849BB221S1UD413a4d0279325V4&argsite=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1058964_sidf_&gdpr=__gdpr_consent--702__&flt=66&subid=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1058964_sidf_"
         },
         {
           "name": "MioMioRun (GEL-Nimbus 28)",
@@ -410,17 +436,24 @@
         },
         {
           "name": "Top4Running 🏃 (GEL-Nimbus 28)",
-          "price": 148.5,
+          "price": 144.0,
           "original": 200.0,
           "stock_42_5": true,
           "available_sizes": [
             "40.5",
             "41.5",
             "42",
-            "42.5"
+            "42.5",
+            "43.5",
+            "44",
+            "44.5",
+            "45",
+            "46",
+            "46.5",
+            "48"
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://top4running.es/p/asics-gel-nimbus-28-1011c221-400"
+          "url": "https://top4running.es/p/asics-gel-nimbus-28-1011c127-403"
         },
         {
           "name": "Running Emotion 👟 (GEL-Nimbus 28)",
@@ -440,30 +473,6 @@
           "url": "https://www.runningemotion.com/es/comprar/zapatilla/asics/gel-nimbus-28-cream-black"
         },
         {
-          "name": "Alltricks España 🚴 (GEL-Nimbus 28)",
-          "price": 149.99,
-          "original": 200.0,
-          "stock_42_5": true,
-          "available_sizes": [
-            "39",
-            "40",
-            "40.5",
-            "41.5",
-            "42",
-            "42.5",
-            "43.5",
-            "44",
-            "44.5",
-            "45",
-            "46",
-            "46.5",
-            "47",
-            "48"
-          ],
-          "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://www.alltricks.es/F-11912-chaussures-running/P-3289524-zapatillas_de_running_asics_gel_nimbus_28_amarillo_verde_para_hombre"
-        },
-        {
           "name": "Decathlon España 💙",
           "price": 154.99,
           "original": 200.0,
@@ -481,7 +490,7 @@
       "affinity": "93%",
       "why_fits": "☁️ La 'Nimbus' de Decathlon: Espuma MFOAM ultra amortiguada para proteger articulaciones por mucho menos.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
         {
           "name": "Decathlon España Oficial 💙",
@@ -515,8 +524,19 @@
       "affinity": "90%",
       "why_fits": "Ideal si notas fatiga en el arco o tobillo en los últimos km de tu tirada de 10 km gracias al 3D Guidance System.",
       "decathlon_available": true,
-      "updated_at": "2026-10-23 12:19:08",
+      "updated_at": "2026-10-30 13:44:42",
       "stores": [
+        {
+          "name": "Running Emotion 👟 (GT-2000 14)",
+          "price": 79.99,
+          "original": 160.0,
+          "stock_42_5": true,
+          "available_sizes": [
+            "42.5"
+          ],
+          "shipping": "Envío gratis • En stock (42.5 EU)",
+          "url": "https://www.runningemotion.com/es/comprar/zapatilla/asics/gt-2000-14-blue-fade-tranquil-teal"
+        },
         {
           "name": "Top4Running 🏃 (GT-2000 14)",
           "price": 113.8,
@@ -546,24 +566,6 @@
           ],
           "shipping": "Envío gratis • En stock (42.5 EU)",
           "url": "https://faf.i-run.es/?P4F4735849BB221S1UD413a4d0158622V4&argsite=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1046127_sidf_&gdpr=__gdpr_consent--702__&flt=66&subid=_sidi_or_org_yyyes_esc_yyytn3o314yyycn1o1046127_sidf_"
-        },
-        {
-          "name": "Running Emotion 👟 (GT-2000 14)",
-          "price": 119.99,
-          "original": 160.0,
-          "stock_42_5": true,
-          "available_sizes": [
-            "41.5",
-            "42",
-            "42.5",
-            "43.5",
-            "44",
-            "44.5",
-            "45",
-            "47"
-          ],
-          "shipping": "Envío gratis • En stock (42.5 EU)",
-          "url": "https://www.runningemotion.com/es/comprar/zapatilla/asics/gt-2000-14-black-cobalt-burst"
         },
         {
           "name": "Decathlon España 💙",
